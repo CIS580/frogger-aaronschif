@@ -10,6 +10,13 @@ export class Controller {
         }
     }
 
+    isAnyPressed() {
+        return this.input.up |
+            this.input.down |
+            this.input.right |
+            this.input.left;
+    }
+
     attach() {
         window.addEventListener('keydown', (event) => {
             let preventDefault = false

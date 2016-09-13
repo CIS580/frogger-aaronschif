@@ -1,35 +1,38 @@
 "use strict";
 
 
-export function Game(screen, updateFunction, renderFunction) {
-    this.update = updateFunction;
-    this.render = renderFunction;
+export class Game {
+    constructor(screen, updateFunction, renderFunction) {
 
-    // Set up buffers
-    this.frontBuffer = screen;
-    this.frontCtx = screen.getContext('2d');
-    this.backBuffer = document.createElement('canvas');
-    this.backBuffer.width = screen.width;
-    this.backBuffer.height = screen.height;
-    this.backCtx = this.backBuffer.getContext('2d');
+        this.update = updateFunction;
+        this.render = renderFunction;
 
-    // Start the game loop
-    this.oldTime = performance.now();
-    this.paused = false;
-}
+        // Set up buffers
+        this.frontBuffer = screen;
+        this.frontCtx = screen.getContext('2d');
+        this.backBuffer = document.createElement('canvas');
+        this.backBuffer.width = screen.width;
+        this.backBuffer.height = screen.height;
+        this.backCtx = this.backBuffer.getContext('2d');
 
-Game.prototype.pause = function(flag) {
-    this.paused = (flag == true);
-}
+        // Start the game loop
+        this.oldTime = performance.now();
+        this.paused = false;
+    }
 
-Game.prototype.loop = function(newTime) {
-    var game = this;
-    var elapsedTime = newTime - this.oldTime;
-    this.oldTime = newTime;
+    pause(flag) {
+        this.paused = (flag == true);
+    }
 
-    if(!this.paused) this.update(elapsedTime);
-    this.render(elapsedTime, this.frontCtx);
+    loop(newTime) {
+        var game = this;
+        var elapsedTime = newTime - this.oldTime;
+        this.oldTime = newTime;
 
-    // Flip the back buffer
-    this.frontCtx.drawImage(this.backBuffer, 0, 0);
+        if(!this.paused) this.update(elapsedTime);
+        this.render(elapsedTime, this.frontCtx);
+
+        // Flip the back buffer
+        this.frontCtx.drawImage(this.backBuffer, 0, 0);
+    }
 }
