@@ -2,17 +2,7 @@
 
 const MS_PER_FRAME = 1000/8;
 
-/**
- * @module exports the Player class
- */
-module.exports = exports = Player;
-
-/**
- * @constructor Player
- * Creates a new player object
- * @param {Postition} position object specifying an x and y
- */
-function Player(position) {
+export function Player(position) {
   this.state = "idle";
   this.x = position.x;
   this.y = position.y;
@@ -24,10 +14,6 @@ function Player(position) {
   this.frame = 0;
 }
 
-/**
- * @function updates the player object
- * {DOMHighResTimeStamp} time the elapsed time since the last frame
- */
 Player.prototype.update = function(time) {
   switch(this.state) {
     case "idle":
@@ -42,11 +28,6 @@ Player.prototype.update = function(time) {
   }
 }
 
-/**
- * @function renders the player into the provided context
- * {DOMHighResTimeStamp} time the elapsed time since the last frame
- * {CanvasRenderingContext2D} ctx the context to render into
- */
 Player.prototype.render = function(time, ctx) {
   switch(this.state) {
     case "idle":

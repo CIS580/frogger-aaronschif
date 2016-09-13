@@ -1,0 +1,8 @@
+#!/usr/bin/env node
+
+var fs = require("fs");
+var browserify = require("browserify");
+browserify("./src/app.js", {debug: true})
+  .transform("babelify", {presets: ["es2015", "react"]})
+  .bundle()
+  .pipe(fs.createWriteStream("bundle.js"));

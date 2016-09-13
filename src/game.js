@@ -1,18 +1,7 @@
 "use strict";
 
-/**
- * @module exports the Game class
- */
-module.exports = exports = Game;
 
-/**
- * @constructor Game
- * Creates a new game object
- * @param {canvasDOMElement} screen canvas object to draw into
- * @param {function} updateFunction function to update the game
- * @param {function} renderFunction function to render the game
- */
-function Game(screen, updateFunction, renderFunction) {
+export function Game(screen, updateFunction, renderFunction) {
   this.update = updateFunction;
   this.render = renderFunction;
 
@@ -29,20 +18,10 @@ function Game(screen, updateFunction, renderFunction) {
   this.paused = false;
 }
 
-/**
- * @function pause
- * Pause or unpause the game
- * @param {bool} pause true to pause, false to start
- */
 Game.prototype.pause = function(flag) {
   this.paused = (flag == true);
 }
 
-/**
- * @function loop
- * The main game loop.
- * @param{time} the current time as a DOMHighResTimeStamp
- */
 Game.prototype.loop = function(newTime) {
   var game = this;
   var elapsedTime = newTime - this.oldTime;

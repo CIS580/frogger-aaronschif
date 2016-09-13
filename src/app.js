@@ -1,8 +1,11 @@
-"use strict;"
+"use strict";
 
 /* Classes */
-const Game = require('./game.js');
-const Player = require('./player.js');
+// const Game = require('./game.js');
+// const Player = require('./player.js');
+
+import {Game} from "./game.js";
+import {Player} from "./player.js";
 
 /* Global variables */
 var canvas = document.getElementById('screen');
