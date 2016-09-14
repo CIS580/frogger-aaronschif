@@ -2,10 +2,12 @@
 
 import {Game} from "./game.js";
 import {Player} from "./player.js";
+import {Car} from "./car.js";
 
 var canvas = document.getElementById('screen');
 var game = new Game(canvas, update, render);
 var player = new Player({x: 0, y: 240})
+let car = new Car();
 
 var masterLoop = function(timestamp) {
     game.loop(timestamp);
@@ -15,6 +17,7 @@ masterLoop(performance.now());
 
 function update(elapsedTime) {
     player.update(elapsedTime);
+    car.update(elapsedTime);
     // TODO: Update the game objects
 }
 
@@ -22,4 +25,5 @@ function render(elapsedTime, ctx) {
     ctx.fillStyle = "lightblue";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     player.render(elapsedTime, ctx);
+    car.render(elapsedTime, ctx)
 }
