@@ -17,6 +17,7 @@ controller.attach();
 export class Player {
     constructor(position) {
         this.state = STATES.idle;
+        this.stateFunc = this.stateIdle.bind(this)();
         this.x = position.x;
         this.y = position.y;
         this.width  = 64;
@@ -35,17 +36,51 @@ export class Player {
         if(this.timer > MS_PER_FRAME) {
             this.timer = 0;
             this.frame++;
-            newFrame = true;
+        } else {
+            return;
         }
-        switch(this.state) {
-            case STATES.idle:
-                break;
-            case STATES.jumping: {
-                if (newFrame)
-                    this.x += this.width / this.jumpingSprites.length;
+
+        let cur = this.stateFunc.next({dt: time});
+        if (cur.done) {
+           this.stateFunc = this.stateIdle.bind(this)();
+        } else if (cur.value !== null) {
+            this.stateFunc = cur.value;
+        }
+    }
+
+    *stateIdle() {
+        while (true) {
+            let {dt} = yield null;
+
+            if (controller.isAnyPressed()) {
+                let h = {x: 0, y: 0};
+                if (controller.input.right) {
+                    h.x = 1;
+                } else if (controller.input.left) {
+                    h.x = -1;
+                } else if (controller.input.up) {
+                    h.y = -1;
+                } else if (controller.input.down) {
+                    h.y = 1;
+                }
+                this.stateFunc = this.stateJumping.bind(this)(h);
             }
-            // TODO: Implement your player's update by state
         }
+    }
+
+    *stateJumping(heading) {
+        let {x, y} = heading;
+        let [endX, endY] = [this.x + this.height*x, this.y + this.height*y];
+        let timeToTake = 1000/ 18;
+        let time = 0;
+        while (time < timeToTake) {
+            let {dt} = yield null;
+            let dd = dt / timeToTake;
+            time += dt;
+            this.x += this.width * x * dd;
+            this.y += this.height * y * dd;
+        }
+        [this.x, this.y] = [endX, endY];
     }
 
     render(time, ctx) {

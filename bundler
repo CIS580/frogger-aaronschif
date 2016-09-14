@@ -3,6 +3,7 @@
 var fs = require("fs");
 var browserify = require("browserify");
 browserify("./src/app.js", {debug: true})
-  .transform("babelify", {presets: ["es2015", "react"]})
-  .bundle()
-  .pipe(fs.createWriteStream("bundle.js"));
+    // .transform("babelify", {presets: ["es2015", "react"]})
+    .transform("babelify", {presets: ["react"], plugins: ["transform-es2015-modules-commonjs"]})
+    .bundle()
+    .pipe(fs.createWriteStream("bundle.js"));
