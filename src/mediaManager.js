@@ -9,11 +9,12 @@ class Media {
 
     }
 
-    fetchImage() {
-
+    fetchImage(url) {
+        let source = new Image();
+        source.src = encodeURI(url);
     }
 
     fetch () {
-        
+
     }
 }

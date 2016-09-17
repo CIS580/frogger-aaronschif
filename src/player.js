@@ -112,8 +112,6 @@ export class Player {
     }
 
     render(time, ctx) {
-        ctx.fillStyle = 'green';
-        ctx.fillRect(this.x, this.y, this.width, this.height);
         switch(this.state) {
             case STATES.jumping: {
                 let frame = this.frame % (this.jumpingSprites.length);
