@@ -6,8 +6,8 @@ import {Car} from "./car.js";
 
 var canvas = document.getElementById('screen');
 var game = new Game(canvas, update, render);
-var player = new Player({x: 0, y: 240})
-let car = new Car();
+var player = new Player({x: 0, y: 256})
+let car = new Car(canvas);
 
 var masterLoop = function(timestamp) {
     game.loop(timestamp);

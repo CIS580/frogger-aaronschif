@@ -11,8 +11,33 @@ const STATES = {
     jumping: Symbol(),
 }
 
+let audioContext = new AudioContext();
+
 let controller = new Controller();
 controller.attach();
+
+
+
+let bong = document.createElement('audio');
+bong.src = encodeURI('assets/bong.ogg');
+
+let music = new Audio(encodeURI('assets/bgm_action_2.mp3'));
+music.loop = true;
+music.play();
+
+(()=>{
+var audioCtx = new window.AudioContext();
+window.audio = audioCtx;
+var gainNode = audioCtx.createGain();
+gainNode.gain.value = 1.0;
+gainNode.connect(audioCtx.destination);
+
+let bongSource = audioCtx.createMediaElementSource(bong);
+bongSource.connect(gainNode);
+
+let musicSource = audioCtx.createMediaElementSource(music);
+musicSource.connect(gainNode);
+})()
 
 export class Player {
     constructor(position) {
@@ -69,6 +94,7 @@ export class Player {
     }
 
     *stateJumping(heading) {
+        bong.play();
         let {x, y} = heading;
         let [endX, endY] = [this.x + this.height*x, this.y + this.height*y];
         let timeToTake = 1000/ 18;
@@ -81,9 +107,13 @@ export class Player {
             this.y += this.height * y * dd;
         }
         [this.x, this.y] = [endX, endY];
+        bong.pause();
+        bong.fastSeek(0);
     }
 
     render(time, ctx) {
+        ctx.fillStyle = 'green';
+        ctx.fillRect(this.x, this.y, this.width, this.height);
         switch(this.state) {
             case STATES.jumping: {
                 let frame = this.frame % (this.jumpingSprites.length);
