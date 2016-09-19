@@ -29,8 +29,6 @@ function update(elapsedTime) {
 }
 
 function render(elapsedTime, ctx) {
-    ctx.fillStyle = "lightblue";
-    // ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(backdrop, 0, 0);
     player.render(elapsedTime, ctx);
     for (let car of cars) {

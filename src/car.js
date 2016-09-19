@@ -1,45 +1,7 @@
 "use strict";
 
-export class Actor {
-    constructor(world) {
-        this.baseControlState = null;
-        this.baseRenderState = null;
-        this.controlState = null;
-        this.renderState = null;
+import {Actor} from "./common/actor.js";
 
-        this.world = world;
-        this.x = 0;
-        this.y = 0;
-        this.width = 64;
-        this.height = 64;
-    }
-
-    getHitBoxes() {
-        return [];
-    }
-
-    collect() {
-        return false;
-    }
-
-    update(dt) {
-        let cur = this.controlState.next({dt: dt});
-        if (cur.value !== null) {
-            this.controlState = cur.value;
-        } else if (cur.done) {
-            this.controlState = this.baseControlState.bind(this)();
-        }
-    }
-
-    render(dt, ctx) {
-        let cur = this.renderState.next({dt: dt, ctx: ctx});
-        if (cur.value !== null) {
-            this.renderState = cur.value;
-        } else if (cur.done) {
-            this.renderState = this.baseRenderState.bind(this)();
-        }
-    }
-}
 
 export class Car extends Actor {
     constructor(world, args) {
@@ -92,17 +54,26 @@ export class Car extends Actor {
     *renderDrive(ctx) {
         while (true) {
             let {dt, ctx} = yield null;
+            ctx.save()
+            if (this.heading === 1) {
+                ctx.translate(this.x+this.width, this.y+this.height);
+                ctx.rotate(Math.PI)
+            } else {
+                ctx.translate(this.x, this.y);
+            }
             ctx.drawImage(
                 this.sprite,
                 247*this.spriteNum, 0, 200, 350,
-                this.x, this.y, this.width, this.height
+                0, 0, this.width, this.height
             )
+            ctx.restore()
         }
     }
 
     reInit() {
         this.delay = 4 * Math.random() * 1000;
-        this.speed = .5 + Math.random() /4;
+        // this.speed = .5 + Math.random() /4;
+        this.speed = .25
         this.spriteNum = Math.floor(Math.random() * 4);
     }
 }

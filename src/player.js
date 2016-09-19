@@ -1,6 +1,6 @@
 "use strict";
 
-import {Controller} from "./common.js";
+import {Controller} from "./common/input.js";
 
 const MS_PER_FRAME = 1000/16;
 
