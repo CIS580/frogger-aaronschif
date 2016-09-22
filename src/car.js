@@ -76,7 +76,7 @@ export class Car extends Actor {
 
     reInit() {
         this.delay = ((4 * Math.random())|0) * 1000;
-        this.speed = .25;
+        this.speed = .25 * this.world.level;
         this.spriteNum = Math.floor(Math.random() * 4);
     }
 }
