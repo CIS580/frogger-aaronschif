@@ -1,6 +1,7 @@
 "use strict";
 
 import {Controller} from "./common/input.js";
+import {EventListener} from "./common/events.js";
 
 const MS_PER_FRAME = 1000/16;
 
@@ -40,7 +41,8 @@ musicSource.connect(gainNode);
 })()
 
 export class Player {
-    constructor(position) {
+    constructor(position, world) {
+        this.world = world;
         this.state = STATES.idle;
         this.stateFunc = this.stateIdle.bind(this)();
         this.x = position.x;
@@ -51,8 +53,14 @@ export class Player {
         this.spritesheet.src = encodeURI('assets/PlayerSprite2.png');
         this.timer = 0;
         this.frame = 0;
+        this.events = new EventListener();
         this.sittingSprites = [{x: 64*3, y: 64}, {x: 64*0, y: 64}, {x: 64*1, y: 64}, {x: 64*2, y: 64}, {x: 64*1, y: 64}, {x: 64*0, y: 64}];
         this.jumpingSprites = [{x: 64*3, y: 0}, {x: 64*2, y: 0}, {x: 64*1, y: 0}, {x: 64*0, y: 0}, {x: 64*1, y: 0}, {x: 64*2, y: 0}, {x: 64*3, y: 0}];
+        this.events.addEventListener('collision', this.collide.bind(this))
+    }
+
+    collide(other) {
+        console.log(other);
     }
 
     update(time) {
@@ -71,6 +79,10 @@ export class Player {
         } else if (cur.value !== null) {
             this.stateFunc = cur.value;
         }
+    }
+
+    getHitBoxes() {
+        return [{x: this.x, y: this.y, width: this.width, height: this.height, obj: this}];
     }
 
     *stateIdle() {

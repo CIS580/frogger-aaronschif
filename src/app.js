@@ -8,7 +8,7 @@ var canvas = document.getElementById('screen');
 let backdrop = new Image();
 backdrop.src = encodeURI('assets/canvas.png');
 var game = new Game(canvas, update, render);
-var player = new Player({x: 0, y: 256})
+var player = new Player({x: 0, y: 256}, game);
 let cars = [];
 for (let i=1; i<11; i++) {
     cars.push(new Car(canvas, {heading: (Math.floor((i+1)/2)%2===0?-1:1), x: 64*i, y: -1112}));
@@ -22,10 +22,16 @@ masterLoop(performance.now());
 
 function update(elapsedTime) {
     player.update(elapsedTime);
+    let hitBox = player.getHitBoxes()[0];
     for (let car of cars) {
         car.update(elapsedTime);
+        if (
+            ((hitBox.x >= car.x && hitBox.x <= car.x + car.width -1) || (hitBox.x + hitBox.width -1 >= car.x && hitBox.x + hitBox.width -1 <= car.x + car.width -1)) &&
+            ((hitBox.y >= car.y && hitBox.y <= car.y + car.height -1) || (hitBox.y + hitBox.height -1 >= car.y && hitBox.y + hitBox.height -1 <= car.y + car.height -1))
+        ) {
+            player.events.emit('collision', car);
+        }
     }
-    // TODO: Update the game objects
 }
 
 function render(elapsedTime, ctx) {

@@ -30,6 +30,10 @@ export class Car extends Actor {
         }
     }
 
+    getHitBoxes() {
+        return [{x: this.x, y: this.y, width: this.width, height: this.height, obj: this}];
+    }
+
     *controlDrive() {
         this.reInit();
         let time = 0;
@@ -71,9 +75,8 @@ export class Car extends Actor {
     }
 
     reInit() {
-        this.delay = 4 * Math.random() * 1000;
-        // this.speed = .5 + Math.random() /4;
-        this.speed = .25
+        this.delay = (4 * Math.random())|0 * 1000;
+        this.speed = .25 this.world.level;
         this.spriteNum = Math.floor(Math.random() * 4);
     }
 }

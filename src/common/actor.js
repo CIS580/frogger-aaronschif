@@ -1,5 +1,7 @@
 "use strict";
 
+import {EventListener} from "./events.js";
+
 
 export class Actor {
     constructor(world) {
@@ -7,6 +9,7 @@ export class Actor {
         this.baseRenderState = null;
         this.controlState = null;
         this.renderState = null;
+        this.events = new EventListener();
 
         this.world = world;
         this.x = 0;

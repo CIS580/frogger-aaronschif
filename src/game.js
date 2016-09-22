@@ -18,6 +18,7 @@ export class Game {
         // Start the game loop
         this.oldTime = performance.now();
         this.paused = false;
+        this.level = 1;
     }
 
     pause(flag) {
