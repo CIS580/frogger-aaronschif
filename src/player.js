@@ -62,7 +62,7 @@ export class Player {
 
     collide(other) {
         if (other.constructor === Car) {
-            this.world.lose();
+            this.world.die();
         }
     }
 

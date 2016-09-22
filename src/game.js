@@ -25,6 +25,9 @@ export class Game {
         this.oldTime = performance.now();
         this.paused = false;
         this.level = 0;
+        this.lives = 3;
+
+        this.endTimeout = 0;
 
         this.nextLevel();
     }
@@ -46,12 +49,29 @@ export class Game {
     }
 
     lose() {
+        this.endTimeout = 4000;
+        this.level = 0;
+        this.lives = 3;
+        this.nextLevel();
         console.log('lose')
+    }
+
+    die() {
+        console.log('die');
+        this.lives--;
+        if (this.lives <= 0) {
+            this.lose();
+        }
+        this.start();
     }
 
     nextLevel() {
         console.log('next')
         this.level++;
+        this.start();
+    }
+
+    start() {
         this.player = new Player({x: 0, y: 256}, this);
         this.button = new Button(this);
         this.flag = new Flag(this);
@@ -62,6 +82,9 @@ export class Game {
     }
 
     update(elapsedTime) {
+        if (this.endTimeout > 0) {
+            return;
+        }
         this.player.update(elapsedTime);
         this.button.update(elapsedTime);
         this.flag.update(elapsedTime);
@@ -79,13 +102,23 @@ export class Game {
     }
 
     render(elapsedTime, ctx) {
+        if (this.endTimeout > 0) {
+            this.endTimeout -= elapsedTime;
+            ctx.fillStyle = `rgba(0, 0, 0, 0.1)`;
+            ctx.fillRect(0, 0, this.width, this.height);
+            ctx.fillStyle = `rgba(255, 0, 0, 0.1)`;
+            ctx.fillText("loser", 400, 200);
+            return
+        }
         ctx.drawImage(backdrop, 0, 0);
         this.button.render(elapsedTime, ctx);
-        this.player.render(elapsedTime, ctx);
         this.flag.render(elapsedTime, ctx);
         for (let car of this.cars) {
             car.render(elapsedTime, ctx)
         }
+        this.player.render(elapsedTime, ctx);
+        ctx.fillStyle = 'black';
+        ctx.fillText(this.lives + ' Lives', 710, 40);
+        ctx.fillText('Level '+this.level, 710, 20)
     }
-
 }
