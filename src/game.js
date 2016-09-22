@@ -15,6 +15,9 @@ export class Game {
         this.backBuffer.height = screen.height;
         this.backCtx = this.backBuffer.getContext('2d');
 
+        this.width = this.frontBuffer.width;
+        this.height = this.frontBuffer.height;
+
         // Start the game loop
         this.oldTime = performance.now();
         this.paused = false;
@@ -35,5 +38,14 @@ export class Game {
 
         // Flip the back buffer
         this.frontCtx.drawImage(this.backBuffer, 0, 0);
+    }
+
+    lose() {
+        console.log('lose')
+    }
+
+    nextLevel() {
+        console.log('next')
+        this.level++;
     }
 }

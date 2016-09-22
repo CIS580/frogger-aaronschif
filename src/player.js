@@ -2,6 +2,7 @@
 
 import {Controller} from "./common/input.js";
 import {EventListener} from "./common/events.js";
+import {Car} from "./car.js";
 
 const MS_PER_FRAME = 1000/16;
 
@@ -60,7 +61,9 @@ export class Player {
     }
 
     collide(other) {
-        console.log(other);
+        if (other.constructor === Car) {
+            this.world.lose();
+        }
     }
 
     update(time) {
