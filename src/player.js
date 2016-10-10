@@ -123,7 +123,7 @@ export class Player {
         }
         [this.x, this.y] = [endX, endY];
         bong.pause();
-        bong.fastSeek(0);
+        // bong.fastSeek(0);
     }
 
     render(time, ctx) {
